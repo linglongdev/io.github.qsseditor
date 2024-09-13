@@ -1,0 +1,63 @@
+From 8ee9df754ca996387cfc635df609f3499783d607 Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Sun, 8 Sep 2024 12:48:53 +0800
+Subject: [PATCH] install
+
+---
+ QssEditor.pro     | 12 ++++++++++--
+ qsseditor.desktop |  4 ++--
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/QssEditor.pro b/QssEditor.pro
+index 6beb244..514740c 100644
+--- a/QssEditor.pro
++++ b/QssEditor.pro
+@@ -3,7 +3,7 @@ TEMPLATE = app
+ QT += core gui
+ 
+ greaterThan(QT_MAJOR_VERSION, 4): QT *= widgets printsupport
+-
++INCLUDEPATH += $$PREFIX/include/x86_64-linux-gnu/qt5
+ mac {
+     greaterThan(QT_MAJOR_VERSION, 4): QT *= macextras
+ }
+@@ -44,7 +44,7 @@ RC_FILE = qsseditor.rc
+ unix:!mac {
+     CONFIG += qscintilla2
+ }
+-
++LIBS += -L$$PREFIX/lib -lqscintilla2_qt5
+ QSCINTILLA_INTERNAL=$$(QSCINTILLA_INTERNAL)
+ equals(QSCINTILLA_INTERNAL, 1)|win32|mac {
+     message("Using internal QScintilla")
+@@ -189,3 +189,11 @@ OTHER_FILES += \
+ # distribution
+ HTTPROOT="https://github.com/smoked-herring/qsseditor"
+ DEFINES += HTTPROOT=$$sprintf("\"\\\"%1\\\"\"", $$HTTPROOT)
++
++target.path = $$PREFIX/bin
++desktop.files = qsseditor.desktop
++desktop.path = $$PREFIX/share/applications/
++icons.path = $$PREFIX/share/icons/hicolor/apps/
++icons.files = icons/qsseditor-16.png
++
++INSTALLS += target desktop icons
+\ No newline at end of file
+diff --git a/qsseditor.desktop b/qsseditor.desktop
+index 9d9f0ac..9175772 100644
+--- a/qsseditor.desktop
++++ b/qsseditor.desktop
+@@ -2,8 +2,8 @@
+ Encoding=UTF-8
+ Type=Application
+ Categories=Qt;Graphics;Viewer
+-Exec=qsseditor %f
+-Icon=qsseditor
++Exec=QssEditor %f
++Icon=qsseditor-16
+ Terminal=false
+ Name=QSS Editor
+ Name[ru]=Редактор QSS
+-- 
+2.43.4
+
