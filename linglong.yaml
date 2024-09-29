@@ -1,0 +1,40 @@
+version: "1"
+
+package:
+  id: io.github.qsseditor
+  name: qsseditor
+  version: 0.6.1.1
+  kind: app
+  description: |
+    Cross-platform application to edit and preview Qt style sheets (QSS).
+
+command:
+  - /opt/apps/io.github.qsseditor/files/bin/QssEditor
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/HappySeaFox/qsseditor.git
+    version: master
+    commit: 582a8fa147185d26c2ede7cab1d9f12322a15e37
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/q/qscintilla2/libqscintilla2-qt5-dev_2.10.4+dfsg-2.1_amd64.deb
+    digest: 4391d51eb102823a9e75c7dcb5e0ec067c2e5ca7f1d0122bd219a349b33462a6
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/q/qscintilla2/libqscintilla2-qt5-13_2.10.4+dfsg-2.1_amd64.deb
+    digest: f752303b902cb900d851aaa861602da81a68489e447ebd5599a3073b73bc3d3d
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/q/qscintilla2/libqscintilla2-qt5-l10n_2.10.4+dfsg-2.1_all.deb
+    digest: d5317f3fb099f1ab847cbd3850720da1a5dd6a7b60f869531a2fc46899047696
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/q/qscintilla2/libqscintilla2-qt5-13_2.10.4+dfsg-2.1_amd64.deb
+    digest: f752303b902cb900d851aaa861602da81a68489e447ebd5599a3073b73bc3d3d
+build: |
+  bash ./install_dep linglong/sources $PREFIX
+  cd /project/linglong/sources/qsseditor.git
+  git apply ../../../0001-install.patch
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
